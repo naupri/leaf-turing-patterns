@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ### Simulation parameters ###
-MAXTIME = 5 # run the simulation until this time
-TIMESTEP = 0.1 # size of the timestep
+MAXTIME = 100 # run the simulation until this time
+TIMESTEP = 0.001 # size of the timestep
 SYSLENGTH = 50 # length of the system to simulate
 SPACESTEP = 1 # size of the spatial step
 
@@ -14,10 +14,9 @@ D_mirkanarf = 7.5 # diffusion coefficient for miRKANARF
 D_astasiarf = 75 # diffusion coefficient for AStasiARF
 
 SEED = 2 # Seed for the random number generator
-SAMPLE_TIMES = [i for i in range(5)] # the timesteps to plot
+SAMPLE_TIMES = [10,50,100,500,1000] # the timesteps to plot
 TIMECOUNT = math.ceil(MAXTIME / TIMESTEP) + 1 # number of timesteps to compute
 SPACECOUNT = math.ceil(SYSLENGTH / SPACESTEP) + 1 # number of spatial coordinates to compute
-
 
 def main():
     # create initial arrays
@@ -41,6 +40,7 @@ def main():
         # generate plots at selected timepoints
         if t * TIMESTEP in SAMPLE_TIMES:
             fig, ax = plt.subplots(1, 2)
+            fig.set_figwidth()
             for i in [0, 1]:
                 timestep_to_plot = 0 if i == 0 else t
                 
@@ -48,7 +48,7 @@ def main():
                 ax[i].plot(space, astasiarf[timestep_to_plot], color='green')
                 ax[i].plot(space, hdzip3[timestep_to_plot], color='red')
                 
-                ax[i].set_xlim(0, SYSLENGTH + SPACESTEP)
+                ax[i].set_xlim(0, SYSLENGTH)
                 ax[i].set_title(f'System state at timepoint {timestep_to_plot * TIMESTEP}')
 
 def hdzip3_step(t, x, hdzip3, mirkanarf, astasiarf):
